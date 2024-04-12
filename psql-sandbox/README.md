@@ -1,1 +1,3 @@
-# More info coming soon...
+# psql-sandbox
+
+Runs a PostgreSQL server and pgAdmin to help practice course exercises.
