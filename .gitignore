@@ -1,1 +1,8 @@
 __scratch__/
+
+# setup files
+.env
+
+# data and postgres files
+*/data/*
+!*/data/.gitkeep
