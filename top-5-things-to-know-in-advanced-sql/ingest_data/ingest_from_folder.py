@@ -27,7 +27,7 @@ def main(params):
     engine.connect()
 
     for f in filenames:
-        table_name =f.split(".")[0]
+        table_name = re.sub("Red30Tech", "", f.split(".")[0])
         df = pd.read_excel(f"../data/{f}", index_col=0)
 
         for col in df.columns:
