@@ -20,9 +20,9 @@ Run ingest script
 python3 ingest_from_folder.py \
     --host localhost \
     --port 5432 \
-    --username postgres \
-    --password postgres \
-    --db Red30Tech \
+    --username postgres-user \
+    --password postgres-pass \
+    --db red30tech \
     --dir ../data \
     --ext xlsx
 ```

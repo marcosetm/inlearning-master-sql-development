@@ -1,9 +1,3 @@
-# todo
-# - download files and clean up name
-# - create a database if it does not exist
-# - create the tables (name of files without .xlsx) 
-# - insert data
-
 import argparse
 import glob
 from os import path
@@ -21,21 +15,42 @@ def main(params):
     ext = f"{params.ext}"
     
     filenames = [path.basename(f) for f in glob.glob(f"{dir}/*.{ext}")] 
+
+    camel_case_pattern = re.compile(r"(?<!^)(?=[A-Z])")
+    space_char_pattern = re.compile(r" ")
+
     database_url = f"postgresql+psycopg2://{user}:{pw}@{host}:{port}/{db}"
     engine = create_engine(database_url)
 
-    engine.connect()
-
     for f in filenames:
-        table_name = re.sub("Red30Tech", "", f.split(".")[0])
-        df = pd.read_excel(f"../data/{f}", index_col=0)
+        df = pd.read_excel(f"../data/{f}")
 
+        # TRANSFORMATIONS
+        # update table name from PrefixTableName to no table_name
+        remove_prefix = re.sub("Red30Tech", "", f.split(".")[0])
+        table_name = camel_case_pattern.sub("_", remove_prefix).lower()
+
+        # update columns from CamelCase to snake_case
+        col_names = {}
         for col in df.columns:
-            if re.search(".*Date.*", col):
+            if bool(re.search(space_char_pattern, col)):
+                col_names[col] = space_char_pattern.sub("_", col).lower()
+            else:    
+                col_names[col] = camel_case_pattern.sub("_", col).lower()
+
+        df.rename(columns=col_names, inplace=True)
+
+        # update dates to datetime
+        for col in df.columns:
+            if re.search(".*date.*", col):
                 df[col] = pd.to_datetime(df[col])
-    
-        df.head(n=0).to_sql(name=table_name, con=engine, if_exists="replace")
-        df.to_sql(name=table_name, con=engine, if_exists="append")
+            
+        # LOAD
+        # create table
+        df.head(n=0).to_sql(name=table_name, con=engine, if_exists="replace", index=False)
+
+        # insert data
+        df.to_sql(name=table_name, con=engine, if_exists="append", index=False)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Ingest CSV files from a folder.")
