@@ -1,4 +1,5 @@
 # Sandbox
+>Original lesson uses SQL Server but I wanted to use PostgreSQL.
 
 Runs a PostgreSQL server and pgAdmin to help practice course exercises.
 
@@ -26,3 +27,5 @@ python3 ingest_from_folder.py \
     --dir ../data \
     --ext xlsx
 ```
+
+Login to pgAdmin and use the [`db_setup.sql`](https://github.com/mrcos-mrtinelli/inlearning-master-sql-development/blob/main/top-5-things-to-know-in-advanced-sql/db_setup.sql) script to update the db.
