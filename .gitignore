@@ -4,5 +4,5 @@ __scratch__/
 .env
 
 # data and postgres files
-*/data/*
-!*/data/.gitkeep
+data/*
+!data/.gitkeep
