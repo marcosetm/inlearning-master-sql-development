@@ -5,4 +5,5 @@ __scratch__/
 
 # data and postgres files
 data/*
+*/data/*
 !data/.gitkeep
