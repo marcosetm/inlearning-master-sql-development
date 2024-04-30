@@ -1,6 +1,6 @@
 # Master SQL Development (LinkedIn Learning Path)
 
-Close project
+Clone project
 ```
 cd master-sql-development
 cp dev.env .env
